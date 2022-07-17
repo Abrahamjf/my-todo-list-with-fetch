@@ -10,3 +10,14 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+body {
+    background-color: rgb(223, 213, 213);
+}
+.my-title {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+    font-size: 80px;
+    font-weight: 100;
+}
