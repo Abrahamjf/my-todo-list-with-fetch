@@ -21,3 +21,12 @@ body {
     font-size: 80px;
     font-weight: 100;
 }
+.box {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+.tasks {
+    padding-inline: 50px;
+}
