@@ -30,3 +30,34 @@ body {
 .tasks {
     padding-inline: 50px;
 }
+
+.list {
+    background-color: white;
+    border-width: medium;
+    width:40.5%;
+    border: black;
+    border-width: thick;
+    font-size: smaller;
+    font-weight: lighter;
+    padding-left: 20px;
+}
+
+span {
+    background-color: white;
+    border-width: medium;
+    width:40.5%;
+    border:solid;
+    border-width: thin;
+    border: black;
+    font-size: smaller;
+    font-weight: lighter;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background-color:white;
+    border:0;
+
+}
