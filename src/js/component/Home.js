@@ -22,31 +22,38 @@ export const Home = () => {
 	// let eraseTask = () =>{
 	// 	listOfTasks.eraser(task);
 	// }
-	let eraseTask = () => {
-		const newTasks = listOfTasks.filter((task, index) => {
-			if (id === index) {
-				return false;
-			}
-			return true;
-		})
-	};
+	// let eraseTask = () => {
+	// 	const newTasks = listOfTasks.filter((task, index) => {
+	// 		if (id === index) {
+	// 			return false;
+	// 		}
+	// 		return true;
+	// 	})
+	// };
 
-	const count = {};
+	// const count = {};
 
-	for (task of listOfTasks) {
-		if (count [task]) {
+	// for (task of listOfTasks) {
+	// 	if (count [task]) {
 
-		}
-	}
+	// 	}
+	// }
 
 	return (
 		<React.Fragment>
 			<Title />
 			<div className="box d-flex flex-column">
             	<input onChange={evento => setTask(evento.target.value)} onKeyDown={handlerKey} value={task} className="tasks"placeholder="What needs to be done?"></input>
-				{listOfTasks && listOfTasks.map((task,index)=> <span key={index} classsName="alltask">{task} <button onClick={eraseTask}>X</button></span>)}
+				{listOfTasks && listOfTasks.map((task,index)=> <span key={index} classsName="alltask">{task} <button onClick={(event) => setlistOfTasks(listOfTasks.filter((element, id)=>{ return index !== id;}))}>X</button></span>)}
 				{listOfTasks && listOfTasks.length == 0 && <h2 className="list">No tasks, add a task.</h2>}
-				
+				{
+					<span className="counter d-flex">
+						{""}
+						{listOfTasks.length === 0
+							? "no task"
+							: listOfTasks.length + " item left"}{""}
+					</span>
+				}
         	</div>
 		</React.Fragment>
 	);
