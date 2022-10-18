@@ -35,6 +35,46 @@ export const Home = () => {
 		}
 	}catch(error){console.log(error)}
   }
+
+  const createUser = async () => {
+        const response = await fetch(urlBase,
+              {
+                method: "POST",
+                header: {"Content-type":"application/json"},
+                body: JSON.stringify([])
+              }
+            );
+        const body = await responde.json();
+        if(!response.ok) {
+          alert('Fallo el GET y el POST')
+        }
+        getTask();
+  };
+
+  const editListOfTask = async (newList) => {
+    const response = await fetch(urlBase,
+      {
+        method: "PUT",
+        header: {"Content-type":"application/json"},
+        body: JSON.stringify(newList)
+      }
+    );
+    console.log(response);
+    return response;
+  };
+
+  const deleteListOfTask = async () => {
+    const response = await fetch(urlBase,
+      {
+        method: "DELETE",
+        header: {"Contente-type":"application/json",},
+      }
+    );
+    setlistOfTasks();
+  };
+
+
+
   useEffect(()=>{getTask()},[])
   return (
     <React.Fragment>
