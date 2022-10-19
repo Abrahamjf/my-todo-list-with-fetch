@@ -2,36 +2,37 @@ import React, { useState, useEffect } from "react";
 import { Title } from "./Title.js";
 import { Input } from "./Input.js";
 
-let initialState = {
-  label: "",
-  done: false,
-};
 
 let urlBase = "https://assets.breatheco.de/apis/fake/todos/user/abrahamjf"
 
 //create your first component
 export const Home = () => {
-  const [task, setTask] = useState(initialState);
   const [listOfTasks, setlistOfTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   let handlerKey = (event) => {
-    if (event.key == "Enter" && task != "") {
-      setlistOfTasks([...listOfTasks, task]);
-      setTask("");
+    if (event.key == "Enter" && event.target.value != "") {
+      //setlistOfTasks([...listOfTasks, task]);
+      //editListOfTask(listOfTasks)
+      // setTask("");
+      let newTask = [...listOfTasks,{ label:event.target.value, done: false}]
+      editListOfTask(newTask)
+      setInputValue("")
     }
   };
 
   let handleChange = (event) => {
-	setTask({...task,[event.target.name]:event.target.value})
+	//setTask({...task,[event.target.name]:event.target.value})
+  setInputValue(event.target.value)
   }
 
   let getTask = async() => {
 	try{
 		let response = await fetch(urlBase)
-		let data = await response.json()
 		if (response.ok) {
+      let data = await response.json()
 			setlistOfTasks(data)
-		} else {
-			console.log("Debo crear el usuario")
+		} else if (response.status === 404){
+        createUser()
 		}
 	}catch(error){console.log(error)}
   }
@@ -40,42 +41,53 @@ export const Home = () => {
         const response = await fetch(urlBase,
               {
                 method: "POST",
-                header: {"Content-type":"application/json"},
+                headers: {"Content-Type":"application/json"},
                 body: JSON.stringify([])
               }
             );
-        const body = await responde.json();
-        if(!response.ok) {
-          alert('Fallo el GET y el POST')
+        if(response.ok) {
+          const body = await response.json();
+          getTask();  
+        } else if (response.status === 400) {
+            getTask()
         }
-        getTask();
   };
 
   const editListOfTask = async (newList) => {
     const response = await fetch(urlBase,
       {
         method: "PUT",
-        header: {"Content-type":"application/json"},
+        headers: {"Content-Type":"application/json"},
         body: JSON.stringify(newList)
       }
     );
-    console.log(response);
-    return response;
+    if (response.ok) {
+      getTask()
+    }
   };
 
-  const deleteListOfTask = async () => {
+  const deleteListOfTask = async (position) => {
+    
+      let result = listOfTasks.filter((element, id) => {
+        return position !== id;
+      })
+    
     const response = await fetch(urlBase,
       {
-        method: "DELETE",
-        header: {"Contente-type":"application/json",},
+        method: "PUT",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(result)
       }
     );
-    setlistOfTasks();
+    if (response.ok) {
+        getTask()
+    }
+    //setlistOfTasks();
   };
 
 
 
-  useEffect(()=>{getTask()},[])
+  useEffect(()=>{createUser()},[])
   return (
     <React.Fragment>
       <Title />
@@ -83,7 +95,7 @@ export const Home = () => {
         <input
           onChange={handleChange}
           onKeyDown={handlerKey}
-          value={task.label}
+          value={inputValue}
 		  name="label"
           className="tasks"
           placeholder="What needs to be done?"
@@ -93,13 +105,10 @@ export const Home = () => {
             <span key={index} className="alltask">
               {task.label}
               <button
-                onClick={(event) =>
-                  setlistOfTasks(
-                    listOfTasks.filter((element, id) => {
-                      return index !== id;
-                    })
-                  )
-                }
+                onClick={event=>{
+                  
+                  deleteListOfTask(index)
+                }}
               >
                 X
               </button>
