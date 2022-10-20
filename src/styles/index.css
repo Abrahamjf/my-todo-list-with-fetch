@@ -42,12 +42,10 @@ body {
     padding-left: 20px;
 }
 
-span {
+span, input {
     background-color: white;
     border-width: medium;
     width:40.5%;
-    border:solid;
-    border-width: thin;
     border: black;
     font-size: smaller;
     font-weight: lighter;
@@ -64,4 +62,9 @@ button {
 
 .counter {
     font-size:medium;
+}
+
+input {
+    border: solid;
+    border-width: thin;
 }
